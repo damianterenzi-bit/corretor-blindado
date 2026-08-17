@@ -212,6 +212,7 @@
     border:1px solid var(--line); color:var(--paper); padding:12px 14px; border-radius:4px; resize:none;
   }
   .assistant-input:focus{outline:none; border-color:var(--amber);}
+  .assistant-input:disabled{opacity:0.35; cursor:not-allowed;}
   .assistant-send{
     font-family:var(--sans); font-weight:600; font-size:13.5px; background:var(--amber); color:var(--navy);
     border:1px solid var(--amber); border-radius:4px; padding:0 20px; cursor:pointer;
@@ -269,6 +270,7 @@
       <div class="brand-mark">CB</div>
       <div class="brand-name">Corretor <em>Blindado</em></div>
     </div>
+    <div id="user-greeting" class="sans" style="display:none; font-size:13px; color:var(--paper-dim);">Olá, <span id="user-name" style="color:var(--amber-2); font-weight:600;"></span></div>
   </div>
 </header>
 
@@ -305,7 +307,7 @@
         <div class="assistant-badge">✦</div>
         <div class="assistant-title">Assistente de IA</div>
       </div>
-      <div class="assistant-sub">Descreva sua situação e receba um rascunho de mensagem baseado nas 10 Cláusulas do Corretor Blindado.</div>
+      <div class="assistant-sub">Descreva sua situação e receba um rascunho de mensagem baseado nas 10 Cláusulas do Corretor Blindado. <strong>Limite: 3 perguntas por semana</strong>, renovando toda semana até 31 de outubro — cerca de 30 perguntas no total ao longo do piloto.</div>
       <div class="assistant-guardrail"><strong>Importante:</strong> este assistente ajuda a redigir mensagens mais rápido. Ele não substitui análise técnica de seguros, não confirma coberturas e não decide por você — a revisão final e o julgamento profissional são sempre seus.</div>
 
       <div class="assistant-log" id="assistant-log"></div>
@@ -618,30 +620,47 @@ function restartQuiz(){
 renderQuestion();
 
 // --- pilot signup form: submits to Netlify Forms without leaving the page ---
+function unlockApp(nome) {
+  document.getElementById('login-gate').style.display = 'none';
+  document.getElementById('app-content').style.display = 'block';
+  if (nome) {
+    document.getElementById('user-name').textContent = nome;
+    document.getElementById('user-greeting').style.display = 'block';
+  }
+}
+
 const signupForm = document.getElementById('signup-form');
 if (signupForm) {
   signupForm.addEventListener('submit', function (e) {
     e.preventDefault();
     const data = new FormData(signupForm);
+    const nome = document.getElementById('signup-nome').value.trim();
     fetch('/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams(data).toString()
     })
     .then(() => {
-      document.getElementById('login-gate').style.display = 'none';
-      document.getElementById('app-content').style.display = 'block';
+      localStorage.setItem('cb-nome', nome);
+      localStorage.setItem('cb-logged-in', '1');
+      unlockApp(nome);
       window.scrollTo(0, 0);
     })
     .catch((err) => {
       console.error('Erro ao enviar formulário de inscrição:', err);
       // Não trava o acesso mesmo se o envio falhar — o formulário é só para
       // guardar o e-mail, não deveria bloquear o uso da ferramenta.
-      document.getElementById('login-gate').style.display = 'none';
-      document.getElementById('app-content').style.display = 'block';
+      localStorage.setItem('cb-nome', nome);
+      localStorage.setItem('cb-logged-in', '1');
+      unlockApp(nome);
       window.scrollTo(0, 0);
     });
   });
+}
+
+// Visitante que já entrou antes neste navegador — pula o login automaticamente
+if (localStorage.getItem('cb-logged-in')) {
+  unlockApp(localStorage.getItem('cb-nome'));
 }
 
 // --- AI assistant widget — same logic as biblioteca-completa.html ---
@@ -667,13 +686,18 @@ function updateQuotaDisplay() {
   const nextLabel = QUOTA_PERIOD === 'month' ? 'mês que vem' : 'semana que vem';
   const quotaEl = document.getElementById('assistant-quota');
   const sendBtn = document.getElementById('assistant-send');
+  const inputEl = document.getElementById('assistant-input');
   if (!quotaEl || !sendBtn) return;
   if (remaining > 0) {
     quotaEl.textContent = `${remaining} de ${QUOTA_LIMIT} perguntas restantes essa ${periodLabel}.`;
     sendBtn.disabled = false;
+    if (inputEl) { inputEl.disabled = false; inputEl.placeholder = 'Ex: cliente de 10 anos achou a renovação cara e mencionou um app de seguro...'; }
   } else {
-    quotaEl.textContent = `Você usou suas ${QUOTA_LIMIT} perguntas dessa ${periodLabel}. Volta ${nextLabel}!`;
+    const jaDeuFeedback = localStorage.getItem('cb-feedback-given');
+    quotaEl.innerHTML = `Você usou suas ${QUOTA_LIMIT} perguntas dessa ${periodLabel}. Volta ${nextLabel}!` +
+      (jaDeuFeedback ? '' : ' <a href="pilot-survey.html" style="color:var(--amber-2);">Enquanto isso, conta pra gente o que achou →</a>');
     sendBtn.disabled = true;
+    if (inputEl) { inputEl.disabled = true; inputEl.placeholder = `Limite semanal atingido — volta ${nextLabel}.`; }
   }
 }
 

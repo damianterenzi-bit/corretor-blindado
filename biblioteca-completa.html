@@ -137,6 +137,7 @@
     border:1px solid var(--line); color:var(--paper); padding:12px 14px; border-radius:4px; resize:none;
   }
   .assistant-input:focus{outline:none; border-color:var(--amber);}
+  .assistant-input:disabled{opacity:0.35; cursor:not-allowed;}
   .assistant-send{
     font-family:sans-serif; font-weight:600; font-size:13.5px; background:var(--amber); color:var(--navy);
     border:1px solid var(--amber); border-radius:4px; padding:0 20px; cursor:pointer;
@@ -153,8 +154,11 @@
       <div class="brand-mark">CB</div>
       <div class="brand-name">Corretor <em>Blindado</em></div>
     </div>
-    <a href="novidades.html" class="back-link" style="margin-right:20px; color:var(--amber-2);">🔔 Novidades da semana</a>
-    <a href="index.html" class="back-link">← Voltar ao diagnóstico</a>
+    <div style="display:flex; align-items:center; gap:20px;">
+      <div id="user-greeting" class="sans" style="display:none; font-size:13px; color:var(--paper-dim);">Olá, <span id="user-name" style="color:var(--amber-2); font-weight:600;"></span></div>
+      <a href="index.html" class="back-link">🏠 Início</a>
+      <a href="novidades.html" class="back-link" style="color:var(--amber-2);">🔔 Novidades da semana</a>
+    </div>
   </div>
 </header>
 
@@ -168,7 +172,7 @@
         <div class="assistant-badge">✦</div>
         <div class="assistant-title">Assistente de IA</div>
       </div>
-      <div class="assistant-sub">Baseado nas 10 Cláusulas — mas entende sua situação específica, não só os modelos prontos.</div>
+      <div class="assistant-sub">Baseado nas 10 Cláusulas — mas entende sua situação específica, não só os modelos prontos. <strong>Limite: 3 perguntas por semana</strong>, renovando toda semana até 31 de outubro — cerca de 30 perguntas no total ao longo do piloto.</div>
       <div class="assistant-guardrail"><strong>Importante:</strong> este assistente ajuda a redigir mensagens mais rápido. Ele não substitui análise técnica de seguros, não confirma coberturas e não decide por você — a revisão final e o julgamento profissional são sempre seus.</div>
 
       <div class="assistant-log" id="assistant-log"></div>
@@ -543,6 +547,13 @@
 </footer>
 
 <script>
+// Mostra o nome de quem já entrou pelo login da página inicial, se disponível
+const cbNome = localStorage.getItem('cb-nome');
+if (cbNome) {
+  document.getElementById('user-name').textContent = cbNome;
+  document.getElementById('user-greeting').style.display = 'block';
+}
+
 // Adds a "Copiar modelo" button under every template automatically — no manual edits needed per card.
 document.querySelectorAll('.template-card').forEach(card => {
   const body = card.querySelector('.template-body');
@@ -594,12 +605,17 @@ function updateQuotaDisplay() {
   const nextLabel = QUOTA_PERIOD === 'month' ? 'mês que vem' : 'semana que vem';
   const quotaEl = document.getElementById('assistant-quota');
   const sendBtn = document.getElementById('assistant-send');
+  const inputEl = document.getElementById('assistant-input');
   if (remaining > 0) {
     quotaEl.textContent = `${remaining} de ${QUOTA_LIMIT} perguntas restantes essa ${periodLabel}.`;
     sendBtn.disabled = false;
+    if (inputEl) { inputEl.disabled = false; inputEl.placeholder = 'Ex: cliente de 10 anos achou a renovação cara e mencionou um app de seguro...'; }
   } else {
-    quotaEl.textContent = `Você usou suas ${QUOTA_LIMIT} perguntas dessa ${periodLabel}. Volta ${nextLabel}!`;
+    const jaDeuFeedback = localStorage.getItem('cb-feedback-given');
+    quotaEl.innerHTML = `Você usou suas ${QUOTA_LIMIT} perguntas dessa ${periodLabel}. Volta ${nextLabel}!` +
+      (jaDeuFeedback ? '' : ' <a href="pilot-survey.html" style="color:var(--amber-2);">Enquanto isso, conta pra gente o que achou →</a>');
     sendBtn.disabled = true;
+    if (inputEl) { inputEl.disabled = true; inputEl.placeholder = `Limite semanal atingido — volta ${nextLabel}.`; }
   }
 }
 
