@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corretor Blindado — Blinde sua carteira antes que a concorrência blinde primeiro</title>
+<meta property="og:title" content="Corretor Blindado">
+<meta property="og:description" content="O diagnóstico de 2 minutos que mostra o quanto sua carteira está exposta — e o programa de 4 semanas para blindar ela.">
+<style>
+  :root{
+    --navy:#0A0F1C;
+    --navy-2:#0F1626;
+    --navy-3:#151E33;
+    --amber:#D97706;
+    --amber-2:#F0A83E;
+    --paper:#EDEBE4;
+    --paper-dim:#9AA3B5;
+    --line:rgba(240,168,62,0.18);
+    --danger:#C4573B;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--navy);
+    color:var(--paper);
+    font-family:'Iowan Old Style','Palatino Linotype',Georgia,serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:920px; margin:0 auto; padding:0 24px;}
+
+  /* ---- stamp / seal motif, used as the signature element ---- */
+  .seal{
+    width:64px; height:64px; border-radius:50%;
+    border:2px solid var(--amber);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; flex-shrink:0;
+  }
+  .seal::before{
+    content:'';
+    position:absolute; inset:6px;
+    border:1px dashed rgba(217,119,6,0.5);
+    border-radius:50%;
+  }
+  .seal span{font-size:11px; letter-spacing:0.14em; font-family:var(--sans); text-transform:uppercase; color:var(--amber-2); font-weight:600;}
+
+  /* ---- nav ---- */
+  header{
+    padding:20px 0; border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex; align-items:center; justify-content:space-between;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-mark{width:34px;height:34px;border:1.5px solid var(--amber); border-radius:50%; display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--amber-2); font-family:var(--sans); font-weight:700;}
+  .brand-name{font-family:var(--sans); font-weight:700; letter-spacing:0.01em; font-size:15px;}
+  .brand-name em{font-style:normal; color:var(--amber-2);}
+
+  /* ---- hero ---- */
+  .hero{padding:88px 0 64px; position:relative;}
+  .eyebrow{
+    font-family:var(--sans); text-transform:uppercase; letter-spacing:0.16em;
+    font-size:12px; color:var(--amber-2); font-weight:600; margin-bottom:22px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:22px; height:1px; background:var(--amber);}
+  h1{
+    font-size:clamp(34px,5.4vw,58px); font-weight:400; line-height:1.08;
+    letter-spacing:-0.01em; max-width:15ch; margin-bottom:26px;
+  }
+  h1 em{font-style:italic; color:var(--amber-2);}
+  .lede{font-size:19px; color:var(--paper-dim); max-width:56ch; margin-bottom:38px;}
+  .cta-row{display:flex; gap:16px; flex-wrap:wrap; align-items:center;}
+  .btn{
+    font-family:var(--sans); font-weight:600; font-size:14.5px;
+    padding:15px 28px; border-radius:3px; cursor:pointer; text-decoration:none;
+    display:inline-flex; align-items:center; gap:8px; transition:transform .15s ease, background .15s ease;
+    letter-spacing:0.01em;
+  }
+  .btn-primary{background:var(--amber); color:var(--navy); border:1px solid var(--amber);}
+  .btn-primary:hover{background:var(--amber-2); transform:translateY(-1px);}
+  .btn-ghost{color:var(--paper); border:1px solid var(--line); background:transparent;}
+  .btn-ghost:hover{border-color:var(--amber);}
+  .hero-stat{
+    margin-top:56px; padding-top:28px; border-top:1px solid var(--line);
+    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  }
+  .stat-num{font-size:30px; color:var(--amber-2); font-weight:400; line-height:1;}
+  .stat-label{font-family:var(--sans); font-size:12.5px; color:var(--paper-dim); margin-top:8px; line-height:1.4;}
+
+  /* ---- section shell ---- */
+  section{padding:76px 0;}
+  .section-line{border-top:1px solid var(--line);}
+  .kicker{font-family:var(--sans); text-transform:uppercase; letter-spacing:0.14em; font-size:11.5px; color:var(--amber-2); font-weight:600; margin-bottom:16px;}
+  h2{font-size:clamp(26px,3.6vw,36px); font-weight:400; line-height:1.2; max-width:20ch; margin-bottom:20px;}
+
+  /* ---- problem section ---- */
+  .problem-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:56px; align-items:start;}
+  @media(max-width:760px){.problem-grid{grid-template-columns:1fr;}}
+  .problem-copy p{color:var(--paper-dim); font-size:16.5px; margin-bottom:18px;}
+  .problem-copy strong{color:var(--paper); font-weight:600;}
+  .fact-card{
+    background:var(--navy-2); border:1px solid var(--line); border-radius:4px; padding:26px;
+  }
+  .fact-card + .fact-card{margin-top:16px;}
+  .fact-num{font-size:26px; color:var(--amber-2);}
+  .fact-text{font-family:var(--sans); font-size:13px; color:var(--paper-dim); margin-top:8px; line-height:1.5;}
+
+  /* ---- diagnostic quiz ---- */
+  .quiz-shell{
+    background:var(--navy-2); border:1px solid var(--line); border-radius:6px;
+    padding:44px; position:relative; overflow:hidden;
+  }
+  .quiz-shell::before{
+    content:'APÓLICE Nº AI-2026'; position:absolute; top:20px; right:24px;
+    font-family:var(--sans); font-size:10px; letter-spacing:0.12em; color:rgba(240,168,62,0.35);
+  }
+  .quiz-progress{font-family:var(--sans); font-size:12px; color:var(--paper-dim); margin-bottom:6px; letter-spacing:0.04em;}
+  .quiz-bar{height:2px; background:var(--line); border-radius:2px; margin-bottom:34px; overflow:hidden;}
+  .quiz-bar-fill{height:100%; background:var(--amber); width:20%; transition:width .35s ease;}
+  .quiz-question{font-size:22px; margin-bottom:28px; line-height:1.35; min-height:66px;}
+  .quiz-options{display:flex; flex-direction:column; gap:10px;}
+  .quiz-opt{
+    font-family:var(--sans); text-align:left; background:var(--navy-3); border:1px solid var(--line);
+    color:var(--paper); padding:16px 20px; border-radius:4px; cursor:pointer; font-size:14.5px;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .quiz-opt:hover{border-color:var(--amber); background:#1a2439;}
+  .quiz-result{display:none;}
+  .result-badge{
+    display:inline-block; font-family:var(--sans); font-size:11.5px; letter-spacing:0.1em;
+    text-transform:uppercase; font-weight:700; padding:6px 14px; border-radius:20px; margin-bottom:20px;
+  }
+  .badge-low{background:rgba(122,168,116,0.15); color:#8FBF88; border:1px solid rgba(143,191,136,0.4);}
+  .badge-med{background:rgba(240,168,62,0.15); color:var(--amber-2); border:1px solid rgba(240,168,62,0.4);}
+  .badge-high{background:rgba(196,87,59,0.15); color:#E08267; border:1px solid rgba(224,130,103,0.4);}
+  .result-title{font-size:26px; margin-bottom:14px; line-height:1.3;}
+  .result-body{color:var(--paper-dim); font-size:16px; margin-bottom:22px;}
+  .result-body strong{color:var(--paper);}
+  .quiz-restart{font-family:var(--sans); font-size:12.5px; color:var(--paper-dim); text-decoration:underline; cursor:pointer; background:none; border:none; margin-top:8px;}
+
+  /* ---- coverage clauses (program) ---- */
+  .clauses{display:flex; flex-direction:column; border:1px solid var(--line); border-radius:6px; overflow:hidden;}
+  .clause{display:grid; grid-template-columns:64px 1fr; gap:22px; padding:28px 26px; border-bottom:1px solid var(--line);}
+  .clause:last-child{border-bottom:none;}
+  .clause:nth-child(odd){background:var(--navy-2);}
+  .clause-num{font-family:var(--sans); font-size:12px; color:var(--amber-2); letter-spacing:0.06em; padding-top:3px;}
+  .clause-title{font-size:19px; margin-bottom:6px;}
+  .clause-desc{font-family:var(--sans); font-size:14.5px; color:var(--paper-dim); line-height:1.55;}
+
+  /* ---- persona strip ---- */
+  .quote-block{
+    border-left:2px solid var(--amber); padding-left:26px; margin:0 auto; max-width:60ch;
+  }
+  .quote-block p{font-size:20px; font-style:italic; color:var(--paper); margin-bottom:14px;}
+  .quote-attr{font-family:var(--sans); font-size:13px; color:var(--paper-dim);}
+
+  /* ---- final cta ---- */
+  .final-cta{text-align:center; padding:90px 0 100px;}
+  .final-cta h2{margin:0 auto 18px; max-width:16ch; text-align:center;}
+  .final-cta p{color:var(--paper-dim); max-width:52ch; margin:0 auto 34px; font-size:16.5px;}
+  .cta-row.center{justify-content:center;}
+  .fine-print{font-family:var(--sans); font-size:12px; color:var(--paper-dim); margin-top:22px;}
+
+  footer{border-top:1px solid var(--line); padding:32px 0; font-family:var(--sans); font-size:12.5px; color:var(--paper-dim); text-align:center;}
+
+  /* ---- signup form + founder note ---- */
+  .founder-note{
+    max-width:52ch; margin:0 auto 34px; font-family:var(--sans); font-size:13.5px;
+    color:var(--paper-dim); background:var(--navy-2); border:1px solid var(--line);
+    border-radius:4px; padding:16px 20px; text-align:left;
+  }
+  .founder-note strong{color:var(--amber-2);}
+  .signup-shell{max-width:420px; margin:0 auto;}
+  .signup-form{display:flex; flex-direction:column; gap:12px;}
+  .signup-form input{
+    font-family:var(--sans); font-size:14.5px; background:var(--navy-2);
+    border:1px solid var(--line); color:var(--paper); padding:14px 16px; border-radius:4px;
+    width:100%;
+  }
+  .signup-form input:focus{outline:none; border-color:var(--amber);}
+  .signup-form input::placeholder{color:var(--paper-dim);}
+  .signup-submit{
+    font-family:var(--sans); font-weight:600; font-size:14.5px; background:var(--amber);
+    color:var(--navy); border:1px solid var(--amber); padding:15px 24px; border-radius:3px;
+    cursor:pointer; width:100%;
+  }
+  .signup-submit:hover{background:var(--amber-2);}
+  .signup-error{display:none; color:#E08267; font-family:var(--sans); font-size:12.5px; margin-top:8px;}
+  .signup-success{display:none;}
+  .signup-success p{color:var(--paper-dim); font-size:15.5px; margin-bottom:20px;}
+
+  /* ---- AI assistant widget (embedded post-signup) ---- */
+  .assistant-box{
+    max-width:640px; margin:0 auto; background:var(--navy-2); border:1px solid var(--amber);
+    border-radius:8px; padding:28px 30px; text-align:left;
+  }
+  .assistant-head{display:flex; align-items:center; gap:12px; margin-bottom:6px;}
+  .assistant-badge{width:32px; height:32px; border-radius:50%; background:var(--amber); color:var(--navy); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0;}
+  .assistant-title{font-size:19px; color:var(--paper);}
+  .assistant-sub{font-family:var(--sans); font-size:13px; color:var(--paper-dim); margin-bottom:18px;}
+  .assistant-guardrail{
+    font-family:var(--sans); font-size:12px; color:var(--paper-dim); background:var(--navy-3);
+    border-left:2px solid var(--amber); padding:12px 16px; border-radius:4px; margin-bottom:18px;
+  }
+  .assistant-log{max-height:300px; overflow-y:auto; margin-bottom:16px;}
+  .assistant-msg{font-family:var(--sans); font-size:14px; padding:12px 16px; border-radius:6px; margin-bottom:10px; line-height:1.6; text-align:left;}
+  .assistant-msg.user{background:var(--navy-3); color:var(--paper);}
+  .assistant-msg.ai{background:rgba(240,168,62,0.08); border:1px solid rgba(240,168,62,0.2); color:var(--paper); white-space:pre-wrap;}
+  .assistant-input-row{display:flex; gap:10px;}
+  .assistant-input{
+    flex-grow:1; font-family:var(--sans); font-size:14px; background:var(--navy-3);
+    border:1px solid var(--line); color:var(--paper); padding:12px 14px; border-radius:4px; resize:none;
+  }
+  .assistant-input:focus{outline:none; border-color:var(--amber);}
+  .assistant-send{
+    font-family:var(--sans); font-weight:600; font-size:13.5px; background:var(--amber); color:var(--navy);
+    border:1px solid var(--amber); border-radius:4px; padding:0 20px; cursor:pointer;
+  }
+  .assistant-send:disabled{opacity:0.4; cursor:not-allowed;}
+  .assistant-quota{font-family:var(--sans); font-size:12px; color:var(--paper-dim); margin-top:12px;}
+  .honeypot{position:absolute; left:-9999px;}
+
+  /* ---- pricing: two paths, side by side ---- */
+  .pricing-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px; max-width:760px; margin:0 auto; text-align:left;}
+  @media(max-width:700px){.pricing-grid{grid-template-columns:1fr;}}
+  .price-card{
+    background:var(--navy-2); border:1px solid var(--line); border-radius:8px; padding:32px 28px;
+    display:flex; flex-direction:column;
+  }
+  .price-card-featured{border-color:var(--amber);}
+  .price-tag{font-family:var(--sans); text-transform:uppercase; letter-spacing:0.1em; font-size:11px; font-weight:700; color:var(--paper-dim); margin-bottom:14px;}
+  .price-tag.featured{color:var(--amber-2);}
+  .price-title{font-size:22px; margin-bottom:6px;}
+  .price-amount{font-family:var(--sans); font-size:30px; font-weight:700; color:var(--paper); margin-bottom:4px;}
+  .price-amount small{font-size:14px; font-weight:400; color:var(--paper-dim);}
+  .price-sub{font-family:var(--sans); font-size:13px; color:var(--paper-dim); margin-bottom:22px;}
+  .price-features{list-style:none; margin-bottom:26px; flex-grow:1;}
+  .price-features li{font-family:var(--sans); font-size:13.5px; color:var(--paper); padding:8px 0 8px 22px; position:relative; border-top:1px solid var(--line);}
+  .price-features li:first-child{border-top:none;}
+  .price-features li::before{content:'—'; position:absolute; left:0; color:var(--amber-2);}
+  .price-btn{
+    font-family:var(--sans); font-weight:600; font-size:14px; text-align:center; text-decoration:none;
+    padding:14px 20px; border-radius:3px; display:block;
+  }
+  .price-btn-outline{border:1px solid var(--line); color:var(--paper);}
+  .price-btn-outline:hover{border-color:var(--amber);}
+  .price-btn-solid{background:var(--amber); color:var(--navy); border:1px solid var(--amber);}
+  .price-btn-solid:hover{background:var(--amber-2);}
+  .pricing-note{max-width:60ch; margin:36px auto 0; font-family:var(--sans); font-size:13px; color:var(--paper-dim);}
+
+  /* ---- weekly updates FOMO teaser (public) ---- */
+  .updates-teaser{padding:20px 0 76px;}
+  .updates-list{max-width:640px; margin:0 auto; border:1px solid var(--line); border-radius:6px; overflow:hidden;}
+  .update-row{
+    display:flex; align-items:center; gap:16px; padding:18px 22px;
+    background:var(--navy-2); border-bottom:1px solid var(--line);
+  }
+  .update-row:last-child{border-bottom:none;}
+  .update-week{font-family:var(--sans); font-size:11px; color:var(--paper-dim); letter-spacing:0.06em; min-width:74px; flex-shrink:0;}
+  .update-title{font-size:15.5px; flex-grow:1;}
+  .update-lock{font-size:15px; flex-shrink:0; opacity:0.6;}
+</style>
+</head>
+<body id="top">
+
+<header>
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="brand-mark">CB</div>
+      <div class="brand-name">Corretor <em>Blindado</em></div>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="login-gate">
+  <div class="wrap" style="max-width:480px; text-align:center;">
+    <div class="eyebrow" style="justify-content:center;">Fase piloto até 31 de outubro · 100% gratuito</div>
+    <h1 style="font-size:clamp(28px,4.5vw,40px);">Entre na turma piloto.</h1>
+    <p class="lede" style="margin:0 auto 30px;">Deixe seu nome e e-mail para liberar o acesso — inclui o assistente de IA, o diagnóstico e a Biblioteca de Cláusulas.</p>
+
+    <div class="signup-shell">
+      <form name="pilot-signup" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="signup-form" id="signup-form">
+        <input type="hidden" name="form-name" value="pilot-signup" />
+        <p class="honeypot"><label>Não preencha isto: <input name="bot-field" /></label></p>
+        <input type="text" name="nome" id="signup-nome" placeholder="Seu nome" required>
+        <input type="email" name="email" id="signup-email" placeholder="Seu e-mail" required>
+        <button type="submit" class="signup-submit">Entrar</button>
+        <div class="signup-error" id="signup-error">Algo deu errado. Tente de novo em instantes.</div>
+      </form>
+    </div>
+    <p class="fine-print">Sem senha, sem cartão. Só usamos seu e-mail pra te avisar de novidades e pelo WhatsApp.</p>
+  </div>
+</section>
+
+<div id="app-content" style="display:none;">
+
+<section class="hero" style="padding-top:56px;">
+  <div class="wrap">
+    <div class="eyebrow">Fase piloto até 31 de outubro · 100% gratuito</div>
+    <h1>Blinde sua carteira <em>antes</em> que a concorrência blinde primeiro.</h1>
+    <p class="lede">Estamos construindo isso junto com corretores reais. Até 31 de outubro, o acesso completo — incluindo um assistente de IA para tirar suas dúvidas — é gratuito, em troca do seu feedback. A versão paga só começa depois disso, moldada pelo que vocês nos disserem.</p>
+
+    <div class="assistant-box" style="margin-top:36px;">
+      <div class="assistant-head">
+        <div class="assistant-badge">✦</div>
+        <div class="assistant-title">Assistente de IA</div>
+      </div>
+      <div class="assistant-sub">Descreva sua situação e receba um rascunho de mensagem baseado nas 10 Cláusulas do Corretor Blindado.</div>
+      <div class="assistant-guardrail"><strong>Importante:</strong> este assistente ajuda a redigir mensagens mais rápido. Ele não substitui análise técnica de seguros, não confirma coberturas e não decide por você — a revisão final e o julgamento profissional são sempre seus.</div>
+
+      <div class="assistant-log" id="assistant-log"></div>
+
+      <div class="assistant-input-row">
+        <textarea class="assistant-input" id="assistant-input" rows="2" placeholder="Ex: cliente de 10 anos achou a renovação cara e mencionou um app de seguro..."></textarea>
+        <button class="assistant-send" id="assistant-send">Enviar</button>
+      </div>
+      <div class="assistant-quota" id="assistant-quota"></div>
+    </div>
+
+    <div class="cta-row" style="margin-top:28px; flex-wrap:wrap;">
+      <a href="#diagnostico" class="btn btn-ghost sans">Fazer o diagnóstico (2 min)</a>
+      <a href="biblioteca-completa.html" class="btn btn-ghost sans">Ver a Biblioteca de Cláusulas</a>
+      <a href="pilot-survey.html" class="btn btn-ghost sans">Dar feedback do piloto</a>
+    </div>
+
+    <div class="hero-stat">
+      <div>
+        <div class="stat-num">166.027</div>
+        <div class="stat-label">corretores de seguros ativos no Brasil hoje</div>
+      </div>
+      <div>
+        <div class="stat-num">4,4×</div>
+        <div class="stat-label">mais corretores com +74 anos do que com −25 anos na profissão</div>
+      </div>
+      <div>
+        <div class="stat-num">53%</div>
+        <div class="stat-label">atuam sozinhos, sem uma equipe por trás para absorver o volume</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-line">
+  <div class="wrap problem-grid">
+    <div class="problem-copy">
+      <div class="kicker">O problema real</div>
+      <h2>Não é a IA que está tomando seus clientes.</h2>
+      <p>É o corretor que responde em 5 minutos, com uma mensagem bem escrita, enquanto você ainda está terminando o atendimento anterior. <strong>A velocidade virou parte do relacionamento</strong> — e isso não tem nada a ver com gostar menos dos seus clientes do que você.</p>
+      <p>Você não precisa aprender a "usar Inteligência Artificial". Você precisa de <strong>respostas prontas, no seu tom, específicas para seguros</strong> — não um chatbot genérico que erra termo técnico e faz você perder a credibilidade que levou 20 anos para construir.</p>
+    </div>
+    <div>
+      <div class="fact-card">
+        <div class="fact-num">6 horas por semana</div>
+        <div class="fact-text">tempo médio estimado escrevendo mensagens de acompanhamento, propostas e lembretes de renovação manualmente.</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-num">Primeira mensagem</div>
+        <div class="fact-text">no seguro, quem responde primeiro geralmente fecha primeiro — a mensagem inicial define o tom de toda a negociação.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-line" id="diagnostico">
+  <div class="wrap" style="max-width:760px;">
+    <div class="kicker" style="text-align:center;">Diagnóstico · 2 minutos</div>
+    <h2 style="text-align:center; max-width:none; margin:0 auto 44px;">O quanto sua carteira está exposta agora?</h2>
+
+    <div class="quiz-shell">
+      <div id="quiz-active">
+        <div class="quiz-progress sans" id="quiz-progress">Pergunta 1 de 5</div>
+        <div class="quiz-bar"><div class="quiz-bar-fill" id="quiz-bar-fill"></div></div>
+        <div class="quiz-question" id="quiz-question"></div>
+        <div class="quiz-options" id="quiz-options"></div>
+      </div>
+
+      <div id="quiz-result" class="quiz-result">
+        <span class="result-badge" id="result-badge"></span>
+        <div class="result-title" id="result-title"></div>
+        <div class="result-body" id="result-body"></div>
+        <a href="#programa" class="btn btn-primary sans">Ver como funciona o programa</a>
+        <div><button class="quiz-restart sans" onclick="restartQuiz()">Refazer o diagnóstico</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-line" id="programa">
+  <div class="wrap" style="max-width:760px;">
+    <div class="kicker">A apólice do programa</div>
+    <h2>4 semanas ao vivo, 10 cláusulas na biblioteca.</h2>
+    <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; color:var(--paper-dim); margin:-6px 0 32px;">A Biblioteca de Modelos com as 10 cláusulas fica liberada desde o primeiro dia — as sessões ao vivo aprofundam os temas mais decisivos, não substituem a biblioteca. <a href="biblioteca-modelos.html" style="color:var(--amber-2);">Acesse a Biblioteca de Modelos →</a></p>
+    <div class="clauses">
+      <div class="clause">
+        <div class="clause-num sans">SEMANA 01</div>
+        <div>
+          <div class="clause-title">Primeiro contato e indicação</div>
+          <div class="clause-desc">Cláusulas 01 e 05 ao vivo: velocidade de resposta a leads novos e como transformar bons atendimentos em indicações.</div>
+        </div>
+      </div>
+      <div class="clause">
+        <div class="clause-num sans">SEMANA 02</div>
+        <div>
+          <div class="clause-title">Renovação, objeção e retenção</div>
+          <div class="clause-desc">Cláusulas 02 e 07 ao vivo: a situação mais tensa da profissão, trabalhada com casos reais de quem está na sala.</div>
+        </div>
+      </div>
+      <div class="clause">
+        <div class="clause-num sans">SEMANA 03</div>
+        <div>
+          <div class="clause-title">Sinistro e comunicação sensível</div>
+          <div class="clause-desc">Cláusulas 03 e 08 ao vivo: mensagens que exigem cuidado — do primeiro aviso de sinistro até explicar um aumento por bônus-malus.</div>
+        </div>
+      </div>
+      <div class="clause">
+        <div class="clause-num sans">SEMANA 04</div>
+        <div>
+          <div class="clause-title">Rotina, cross-sell e visão de carteira</div>
+          <div class="clause-desc">Cláusulas 04, 06, 09 e 10 ao vivo: o que automatizar com critério, onboarding pós-venda e como enxergar oportunidades na carteira toda.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-line">
+  <div class="wrap">
+    <div class="quote-block">
+      <p>"Eu não tinha medo de IA. Eu tinha medo de ser a única que não sabia usar — e todo mundo perceber."</p>
+      <div class="quote-attr sans">— feedback de corretora, 22 anos de profissão, turma piloto</div>
+    </div>
+  </div>
+</section>
+
+<section class="updates-teaser">
+  <div class="wrap">
+    <div class="kicker" style="text-align:center; justify-content:center; display:flex;">Publicado toda semana · turma piloto e assinantes</div>
+    <h2 style="text-align:center; max-width:none; margin:0 auto 30px;">O que você ainda não tem acesso.</h2>
+    <div class="updates-list">
+      <div class="update-row">
+        <div class="update-week">SEMANA 12</div>
+        <div class="update-title">Como responder quando o cliente compara com seguro por app</div>
+        <div class="update-lock">🔒</div>
+      </div>
+      <div class="update-row">
+        <div class="update-week">SEMANA 11</div>
+        <div class="update-title">Ajuste na Cláusula 02 para renovação de frota (PJ)</div>
+        <div class="update-lock">🔒</div>
+      </div>
+      <div class="update-row">
+        <div class="update-week">SEMANA 10</div>
+        <div class="update-title">Situação real: cliente pediu reembolso e ameaçou avaliação negativa</div>
+        <div class="update-lock">🔒</div>
+      </div>
+      <div class="update-row">
+        <div class="update-week">SEMANA 09</div>
+        <div class="update-title">Nova cláusula: primeira mensagem para leads vindos de indicação em grupo</div>
+        <div class="update-lock">🔒</div>
+      </div>
+    </div>
+    <p style="text-align:center; font-family:var(--sans); font-size:13px; color:var(--paper-dim); max-width:52ch; margin:20px auto 0;">Publicamos uma situação nova, ou um ajuste em uma cláusula existente, toda semana — no site e no grupo de WhatsApp da comunidade. Quem cancela para de receber a partir daquele momento.</p>
+
+    <div class="clauses" style="max-width:640px; margin:36px auto 0;">
+      <div class="clause" style="grid-template-columns:64px 1fr; border-bottom:none; background:var(--navy-2);">
+        <div class="clause-num sans" style="color:var(--amber-2); font-size:20px; padding-top:0;">🔔</div>
+        <div>
+          <div class="clause-title" style="font-size:21px;">Toda semana, um post novo. Sempre nos dois lugares.</div>
+          <div class="clause-desc">Site e grupo de WhatsApp recebem o mesmo conteúdo, no mesmo dia — nunca só um dos dois. Assim ninguém da comunidade fica de fora, esteja mais ativo no site ou no WhatsApp.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" id="pricing">
+  <div class="wrap">
+    <div class="kicker" style="justify-content:center; display:flex;">Fase piloto · 100% gratuito até 31 de outubro</div>
+    <h2>Sem cobrança. Sem cartão. Só feedback real, dos dois lados.</h2>
+    <p>Você já está dentro — isso aqui é só o resumo do que sua vaga inclui até 31 de outubro.</p>
+
+    <div class="pricing-grid" style="grid-template-columns:1fr; max-width:460px;">
+      <div class="price-card price-card-featured">
+        <div class="price-tag featured">Turma piloto — sua vaga</div>
+        <div class="price-amount">R$0 <small>até 31 de outubro de 2026</small></div>
+        <div class="price-sub">Sem cartão, sem cobrança automática</div>
+        <ul class="price-features">
+          <li>Assistente de IA — sua ferramenta principal, com as 10 Cláusulas como base</li>
+          <li>Comunidade ativa + resposta às suas dúvidas em até 24h úteis</li>
+          <li>Novidades toda semana — no site e no grupo de WhatsApp</li>
+        </ul>
+        <a href="#top" class="price-btn price-btn-solid">Voltar pro assistente ↑</a>
+      </div>
+    </div>
+
+    <div class="founder-note" style="max-width:520px;">
+      <strong>Sobre o assistente de IA:</strong> ele existe para te ajudar a decidir mais rápido — não para decidir por você. Toda resposta é um ponto de partida para revisão sua, nunca uma recomendação final sobre um cliente real. A palavra e o julgamento profissional continuam sendo sempre seus.
+    </div>
+
+    <p class="pricing-note">A versão paga (R$99/mês) só começa depois de 31 de outubro, já com os ajustes que a turma piloto apontar. Quem participa do piloto tem prioridade e condição especial nessa transição.</p>
+  </div>
+</section>
+
+<section class="section-line">
+  <div class="wrap" style="text-align:center; padding:8px 0;">
+    <p style="font-family:var(--sans); font-size:13px; color:var(--paper-dim);">Alguma pergunta ou situação que a IA não resolveu? <a href="pilot-survey.html" style="color:var(--amber-2);">Conta pra gente aqui</a>.</p>
+  </div>
+</section>
+
+</div>
+
+<footer>
+  <div class="wrap">Corretor Blindado — programa piloto para corretores de seguros. Não constitui aconselhamento regulatório ou substituição de obrigações da SUSEP.</div>
+</footer>
+
+<script>
+const questions = [
+  {
+    q: "Quanto tempo você leva, em média, para responder uma mensagem de renovação no WhatsApp?",
+    opts: [
+      {t:"Menos de 15 minutos", v:0},
+      {t:"Entre 15 minutos e 1 hora", v:1},
+      {t:"Algumas horas", v:2},
+      {t:"Só no dia seguinte", v:3}
+    ]
+  },
+  {
+    q: "Dos últimos 10 clientes que você perdeu, quantos foram para um corretor que respondeu mais rápido ou pareceu mais atualizado?",
+    opts: [
+      {t:"Nenhum que eu saiba", v:0},
+      {t:"1 ou 2", v:1},
+      {t:"3 a 5", v:2},
+      {t:"Mais de 5", v:3}
+    ]
+  },
+  {
+    q: "Você já usou alguma ferramenta de IA (ChatGPT, Claude, etc.) para alguma tarefa do seu trabalho nos últimos 30 dias?",
+    opts: [
+      {t:"Sim, uso regularmente no trabalho", v:0},
+      {t:"Sim, uma ou duas vezes", v:1},
+      {t:"Não — só uso para coisas pessoais", v:2},
+      {t:"Nunca usei", v:3}
+    ]
+  },
+  {
+    q: "Quantas horas por semana você estima gastar escrevendo mensagens, propostas ou lembretes de renovação manualmente?",
+    opts: [
+      {t:"Menos de 2 horas", v:0},
+      {t:"Entre 2 e 5 horas", v:1},
+      {t:"Entre 5 e 10 horas", v:2},
+      {t:"Mais de 10 horas", v:3}
+    ]
+  },
+  {
+    q: "Quando você pensa em usar IA no seu trabalho como corretor, qual frase mais parece com você?",
+    opts: [
+      {t:"Tenho curiosidade, quero aprender", v:0},
+      {t:"Neutro — ainda não parei para pensar", v:1},
+      {t:"Um certo receio de fazer errado ou parecer robótico", v:2},
+      {t:"Preocupação real de ficar para trás na profissão", v:3}
+    ]
+  }
+];
+
+let current = 0;
+let score = 0;
+
+function renderQuestion(){
+  const item = questions[current];
+  document.getElementById('quiz-progress').textContent = `Pergunta ${current+1} de ${questions.length}`;
+  document.getElementById('quiz-bar-fill').style.width = `${((current)/questions.length)*100}%`;
+  document.getElementById('quiz-question').textContent = item.q;
+  const optsEl = document.getElementById('quiz-options');
+  optsEl.innerHTML = '';
+  item.opts.forEach(opt=>{
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt.t;
+    btn.onclick = ()=>{ score += opt.v; current++; if(current < questions.length){ renderQuestion(); } else { showResult(); } };
+    optsEl.appendChild(btn);
+  });
+}
+
+function showResult(){
+  document.getElementById('quiz-bar-fill').style.width = '100%';
+  document.getElementById('quiz-active').style.display = 'none';
+  const resultEl = document.getElementById('quiz-result');
+  resultEl.style.display = 'block';
+
+  const badge = document.getElementById('result-badge');
+  const title = document.getElementById('result-title');
+  const body = document.getElementById('result-body');
+
+  if(score <= 4){
+    badge.className = 'result-badge badge-low';
+    badge.textContent = 'Exposição baixa';
+    title.textContent = 'Você já está à frente da maioria da categoria.';
+    body.innerHTML = `Sua velocidade de resposta e uso de ferramentas já colocam você bem posicionado. O programa vai te ajudar a <strong>ganhar ainda mais horas por semana</strong> e formalizar processos que hoje só existem na sua cabeça.`;
+  } else if(score <= 9){
+    badge.className = 'result-badge badge-med';
+    badge.textContent = 'Exposição moderada';
+    title.textContent = 'Você está no meio do pelotão — e isso muda rápido.';
+    body.innerHTML = `Com <strong>4,4 corretores acima de 74 anos para cada um abaixo de 25</strong> atuando hoje no Brasil, a geração mais nova está entrando com hábitos de resposta rápida já formados. Você ainda tem uma boa janela para fechar a diferença sem perder o que já funciona no seu atendimento.`;
+  } else {
+    badge.className = 'result-badge badge-high';
+    badge.textContent = 'Exposição alta';
+    title.textContent = 'A concorrência mais rápida já está tirando renovações suas.';
+    body.innerHTML = `O tempo que você gasta escrevendo mensagens manualmente — possivelmente <strong>mais de 6 horas por semana</strong> — é tempo que um concorrente mais ágil está usando para fechar com o seu cliente primeiro. Isso é resolvível em semanas, não em anos.`;
+  }
+}
+
+function restartQuiz(){
+  current = 0; score = 0;
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  renderQuestion();
+}
+
+renderQuestion();
+
+// --- pilot signup form: submits to Netlify Forms without leaving the page ---
+const signupForm = document.getElementById('signup-form');
+if (signupForm) {
+  signupForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const data = new FormData(signupForm);
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data).toString()
+    })
+    .then(() => {
+      document.getElementById('login-gate').style.display = 'none';
+      document.getElementById('app-content').style.display = 'block';
+      window.scrollTo(0, 0);
+    })
+    .catch((err) => {
+      console.error('Erro ao enviar formulário de inscrição:', err);
+      // Não trava o acesso mesmo se o envio falhar — o formulário é só para
+      // guardar o e-mail, não deveria bloquear o uso da ferramenta.
+      document.getElementById('login-gate').style.display = 'none';
+      document.getElementById('app-content').style.display = 'block';
+      window.scrollTo(0, 0);
+    });
+  });
+}
+
+// --- AI assistant widget — same logic as biblioteca-completa.html ---
+const QUOTA_PERIOD = 'week'; // 'week' (piloto) ou 'month' (assinatura paga, 15/mês)
+const QUOTA_LIMIT = 3;
+
+function getPeriodKey() {
+  const now = new Date();
+  if (QUOTA_PERIOD === 'month') {
+    return `cb-assistant-${now.getFullYear()}-m${now.getMonth() + 1}`;
+  }
+  const firstJan = new Date(now.getFullYear(), 0, 1);
+  const week = Math.ceil((((now - firstJan) / 86400000) + firstJan.getDay() + 1) / 7);
+  return `cb-assistant-${now.getFullYear()}-w${week}`;
+}
+function getUsageCount() { return parseInt(localStorage.getItem(getPeriodKey()) || '0', 10); }
+function incrementUsage() { localStorage.setItem(getPeriodKey(), String(getUsageCount() + 1)); }
+
+function updateQuotaDisplay() {
+  const used = getUsageCount();
+  const remaining = Math.max(0, QUOTA_LIMIT - used);
+  const periodLabel = QUOTA_PERIOD === 'month' ? 'mês' : 'semana';
+  const nextLabel = QUOTA_PERIOD === 'month' ? 'mês que vem' : 'semana que vem';
+  const quotaEl = document.getElementById('assistant-quota');
+  const sendBtn = document.getElementById('assistant-send');
+  if (!quotaEl || !sendBtn) return;
+  if (remaining > 0) {
+    quotaEl.textContent = `${remaining} de ${QUOTA_LIMIT} perguntas restantes essa ${periodLabel}.`;
+    sendBtn.disabled = false;
+  } else {
+    quotaEl.textContent = `Você usou suas ${QUOTA_LIMIT} perguntas dessa ${periodLabel}. Volta ${nextLabel}!`;
+    sendBtn.disabled = true;
+  }
+}
+
+function appendMessage(text, sender) {
+  const log = document.getElementById('assistant-log');
+  if (!log) return;
+  const msg = document.createElement('div');
+  msg.className = `assistant-msg ${sender}`;
+  msg.textContent = text;
+  log.appendChild(msg);
+  log.scrollTop = log.scrollHeight;
+}
+
+function initAssistant() {
+  updateQuotaDisplay();
+  const assistantSend = document.getElementById('assistant-send');
+  const assistantInput = document.getElementById('assistant-input');
+  if (!assistantSend || assistantSend.dataset.bound) return;
+  assistantSend.dataset.bound = 'true';
+
+  assistantSend.addEventListener('click', async () => {
+    const message = assistantInput.value.trim();
+    if (!message) return;
+    if (getUsageCount() >= QUOTA_LIMIT) return;
+
+    appendMessage(message, 'user');
+    assistantInput.value = '';
+    assistantSend.disabled = true;
+    assistantSend.textContent = '...';
+
+    try {
+      const res = await fetch('/.netlify/functions/broker-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      const resData = await res.json();
+      appendMessage(resData.reply || 'Não consegui responder agora. Tente de novo em instantes.', 'ai');
+      incrementUsage();
+    } catch (err) {
+      appendMessage('Erro de conexão. Tente novamente em instantes.', 'ai');
+    }
+
+    assistantSend.textContent = 'Enviar';
+    updateQuotaDisplay();
+  });
+}
+
+// Chamado aqui, no final do script, depois que QUOTA_PERIOD/QUOTA_LIMIT e todas
+// as funções do assistente já existem — chamar isso antes causava um erro que
+// travava o resto do script (incluindo o formulário de login).
+initAssistant();
+</script>
+
+</body>
+</html>

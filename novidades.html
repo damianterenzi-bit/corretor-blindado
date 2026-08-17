@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novidades da Semana — Corretor Blindado</title>
+<style>
+  :root{
+    --navy:#0A0F1C; --navy-2:#0F1626; --navy-3:#151E33;
+    --amber:#D97706; --amber-2:#F0A83E;
+    --paper:#EDEBE4; --paper-dim:#9AA3B5;
+    --line:rgba(240,168,62,0.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--navy); color:var(--paper); font-family:'Iowan Old Style','Palatino Linotype',Georgia,serif; line-height:1.6;}
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:820px; margin:0 auto; padding:0 24px;}
+
+  header{padding:20px 0; border-bottom:1px solid var(--line); position:sticky; top:0; background:rgba(10,15,28,0.92); backdrop-filter:blur(6px); z-index:10;}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-mark{width:34px;height:34px;border:1.5px solid var(--amber); border-radius:50%; display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--amber-2); font-family:sans-serif; font-weight:700;}
+  .brand-name{font-family:sans-serif; font-weight:700; font-size:15px;}
+  .brand-name em{font-style:normal; color:var(--amber-2);}
+  .back-link{font-family:sans-serif; font-size:13px; color:var(--paper-dim); text-decoration:none;}
+  .back-link:hover{color:var(--amber-2);}
+
+  .intro{padding:64px 0 40px;}
+  .kicker{font-family:sans-serif; text-transform:uppercase; letter-spacing:0.14em; font-size:11.5px; color:var(--amber-2); font-weight:600; margin-bottom:16px;}
+  h1{font-size:clamp(28px,4vw,42px); font-weight:400; line-height:1.15; max-width:16ch; margin-bottom:20px;}
+  h1 em{font-style:italic; color:var(--amber-2);}
+  .intro p{color:var(--paper-dim); font-size:16.5px; max-width:58ch;}
+
+  .week-section{padding:52px 0; border-bottom:1px solid var(--line);}
+  .week-head{display:flex; align-items:baseline; gap:16px; margin-bottom:8px;}
+  .week-tag{font-family:sans-serif; font-size:12px; color:var(--amber-2); letter-spacing:0.08em;}
+  .week-section h2{font-size:23px; font-weight:400; max-width:28ch;}
+  .week-sub{font-family:sans-serif; color:var(--paper-dim); font-size:13.5px; margin-bottom:28px; max-width:60ch;}
+
+  .template-card{
+    background:var(--navy-2); border:1px solid var(--line); border-radius:6px;
+    padding:26px 28px; margin-bottom:20px;
+  }
+  .template-name{font-family:sans-serif; font-size:13px; font-weight:700; color:var(--paper); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.03em;}
+  .template-when{font-family:sans-serif; font-size:12.5px; color:var(--paper-dim); margin-bottom:16px; font-style:italic;}
+  .template-body{
+    background:var(--navy-3); border-radius:4px; padding:18px 20px; font-size:15.5px; line-height:1.7;
+    white-space:pre-wrap; border-left:2px solid var(--amber);
+  }
+  .placeholder{color:var(--amber-2);}
+  .template-note{font-family:sans-serif; font-size:12.5px; color:var(--paper-dim); margin-top:12px; display:flex; gap:8px; align-items:flex-start;}
+  .template-note::before{content:'💡'; flex-shrink:0;}
+  .copy-btn{
+    font-family:sans-serif; font-size:12.5px; font-weight:600; color:var(--amber-2);
+    background:transparent; border:1px solid rgba(240,168,62,0.4); border-radius:4px;
+    padding:9px 16px; margin-top:12px; cursor:pointer; transition:background .15s ease;
+  }
+  .copy-btn:hover{background:rgba(240,168,62,0.1);}
+
+  .whatsapp-note{
+    max-width:640px; margin:0 auto; background:var(--navy-2); border:1px solid var(--line);
+    border-radius:6px; padding:26px 28px; text-align:center; margin-top:12px;
+  }
+  .whatsapp-note p{font-family:sans-serif; font-size:14px; color:var(--paper-dim);}
+
+  footer{padding:48px 0; font-family:sans-serif; font-size:12.5px; color:var(--paper-dim); text-align:center;}
+
+  /* ---- filters ---- */
+  .filter-bar{
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between;
+    padding:24px 0; border-bottom:1px solid var(--line); margin-bottom:8px;
+  }
+  .filter-pills{display:flex; gap:8px; flex-wrap:wrap;}
+  .filter-pill{
+    font-family:sans-serif; font-size:12.5px; color:var(--paper); background:transparent;
+    border:1px solid var(--line); border-radius:20px; padding:8px 16px; cursor:pointer; transition:all .15s ease;
+  }
+  .filter-pill:hover{border-color:var(--amber);}
+  .filter-pill.active{background:var(--amber); color:var(--navy); border-color:var(--amber); font-weight:600;}
+  .filter-month select{
+    font-family:sans-serif; font-size:12.5px; color:var(--paper); background:var(--navy-2);
+    border:1px solid var(--line); border-radius:20px; padding:8px 14px; cursor:pointer;
+  }
+  .category-badge{
+    display:inline-block; font-family:sans-serif; font-size:10.5px; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.05em; padding:4px 10px; border-radius:20px; margin-bottom:12px;
+  }
+  .cat-situacao{background:rgba(240,168,62,0.15); color:var(--amber-2); border:1px solid rgba(240,168,62,0.4);}
+  .cat-clausula{background:rgba(122,168,116,0.15); color:#8FBF88; border:1px solid rgba(143,191,136,0.4);}
+  .cat-ajuste{background:rgba(154,163,181,0.15); color:var(--paper-dim); border:1px solid var(--line);}
+  .cat-tendencia{background:rgba(196,87,59,0.15); color:#E08267; border:1px solid rgba(224,130,103,0.4);}
+  .no-results{display:none; text-align:center; padding:60px 0; font-family:sans-serif; color:var(--paper-dim);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="brand-mark">CB</div>
+      <div class="brand-name">Corretor <em>Blindado</em></div>
+    </div>
+    <a href="biblioteca-completa.html" class="back-link">← Voltar à Biblioteca completa</a>
+  </div>
+</header>
+
+<section class="intro">
+  <div class="wrap">
+    <div class="kicker">Novidades · exclusivo para assinantes</div>
+    <h1>Uma <em>situação nova</em>, toda semana.</h1>
+    <p>Cada semana, um ajuste em uma cláusula existente ou uma situação nova que apareceu com corretores reais. Isso fica só aqui e no grupo de WhatsApp — quem cancela para de receber a partir desse momento.</p>
+    <p style="margin-top:14px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:13px; color:var(--paper-dim);">No início, os temas vêm da nossa experiência de mercado. Conforme a comunidade cresce, passamos a priorizar o que vocês pedem — nas enquetes do grupo e no formulário de feedback da Biblioteca.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="filter-bar">
+    <div class="filter-pills" id="filter-pills">
+      <button class="filter-pill active" data-filter="todos">Todos</button>
+      <button class="filter-pill" data-filter="situacao">Situação real</button>
+      <button class="filter-pill" data-filter="clausula">Nova cláusula</button>
+      <button class="filter-pill" data-filter="ajuste">Ajuste em cláusula</button>
+      <button class="filter-pill" data-filter="tendencia">Tendência do setor</button>
+    </div>
+    <div class="filter-month">
+      <select id="month-filter">
+        <option value="todos">Todos os meses</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<section class="week-section" data-category="tendencia" data-month="2026-09">
+  <div class="wrap">
+    <span class="category-badge cat-tendencia">Tendência do setor</span>
+    <div class="week-head"><span class="week-tag">SEMANA 13</span></div>
+    <h2>Seguradoras já usam IA para agilizar sinistros — o que isso muda pra você</h2>
+    <p class="week-sub">Não é um modelo pra copiar — é contexto de mercado que vale entender antes que um cliente pergunte e você seja pego de surpresa.</p>
+
+    <div class="template-card">
+      <div class="template-name">O que está mudando</div>
+      <div class="template-when">Leitura de 2 minutos, sem modelo de mensagem — puro contexto de setor.</div>
+      <div class="template-body">Várias seguradoras grandes já usam IA para analisar fotos de sinistros de auto e acelerar a aprovação de reparos simples, reduzindo o prazo de dias para horas em casos sem complicação. Para você, isso significa duas coisas: primeiro, seus clientes vão comparar a velocidade da sua seguradora com a de outras — vale saber qual a política da(s) seguradora(s) que você mais trabalha. Segundo, isso não elimina o seu papel: quanto mais rápida fica a parte operacional, mais o cliente valoriza quem o orienta e briga por ele quando o caso é mais complicado do que a IA da seguradora consegue resolver sozinha.</div>
+      <div class="template-note">Vale perguntar direto à sua seguradora principal qual o prazo médio hoje para sinistros simples — é um dado que impressiona o cliente na Cláusula 03.</div>
+    </div>
+  </div>
+</section>
+
+<section class="week-section" data-category="situacao" data-month="2026-08">
+  <div class="wrap">
+    <span class="category-badge cat-situacao">Situação real</span>
+    <div class="week-head"><span class="week-tag">SEMANA 12</span></div>
+    <h2>Como responder quando o cliente compara com seguro por app</h2>
+    <p class="week-sub">Cada vez mais comum: cliente manda print de uma cotação de um app de seguro direto, sem corretor.</p>
+
+    <div class="template-card">
+      <div class="template-name">Resposta à comparação com seguro por app</div>
+      <div class="template-when">Cliente acha que "sem corretor" é sempre mais barato — nem sempre é, e mesmo quando é, falta o suporte humano na hora do sinistro.</div>
+      <div class="template-body">Entendo, <span class="placeholder">[NOME]</span> — apps de seguro têm ficado mais populares mesmo. Só um ponto importante: com eles, na hora de um sinistro, você lida sozinho(a) com a seguradora, sem ninguém pra te orientar ou brigar pela sua cobertura. Comigo, esse acompanhamento continua fazendo parte do serviço, sem custo extra. Quer que eu compare os dois lado a lado pra você decidir com calma?</div>
+      <div class="template-note">Não desqualifique o app — mostre o que ele não oferece (acompanhamento humano no sinistro), não apenas preço.</div>
+    </div>
+  </div>
+</section>
+
+<section class="week-section" data-category="ajuste" data-month="2026-08">
+  <div class="wrap">
+    <span class="category-badge cat-ajuste">Ajuste em cláusula</span>
+    <div class="week-head"><span class="week-tag">SEMANA 11</span></div>
+    <h2>Ajuste na Cláusula 02 para renovação de frota (PJ)</h2>
+    <p class="week-sub">A Cláusula 02 original foi pensada para pessoa física. Esta é a variante para quando o cliente é uma empresa com frota de veículos.</p>
+
+    <div class="template-card">
+      <div class="template-name">Renovação de frota — variante PJ</div>
+      <div class="template-when">Tom mais formal, decisão geralmente passa por mais de uma pessoa na empresa do cliente.</div>
+      <div class="template-body">Prezado(a) <span class="placeholder">[NOME]</span>, a apólice de frota da <span class="placeholder">[EMPRESA]</span> vence em <span class="placeholder">[DATA]</span>. Já preparei a análise de renovação considerando o histórico dos <span class="placeholder">[X VEÍCULOS]</span> — posso agendar 15 minutos essa semana para apresentar as opções antes do vencimento?</div>
+      <div class="template-note">Peça uma reunião curta em vez de tentar fechar tudo por mensagem — decisões PJ raramente fecham só no WhatsApp.</div>
+    </div>
+  </div>
+</section>
+
+<section class="week-section" data-category="situacao" data-month="2026-08">
+  <div class="wrap">
+    <span class="category-badge cat-situacao">Situação real</span>
+    <div class="week-head"><span class="week-tag">SEMANA 10</span></div>
+    <h2>Situação real: cliente pediu reembolso e ameaçou avaliação negativa</h2>
+    <p class="week-sub">Situação enviada por uma corretora da comunidade — mantida anônima, com autorização para compartilhar.</p>
+
+    <div class="template-card">
+      <div class="template-name">Resposta a ameaça de avaliação negativa</div>
+      <div class="template-when">Cliente frustrado(a) usa a ameaça de avaliação pública como forma de pressão — a resposta não deve soar defensiva nem intimidada.</div>
+      <div class="template-body">Entendo sua frustração, <span class="placeholder">[NOME]</span>, e quero resolver isso com você da forma certa. Antes de mais nada: me conta com calma o que aconteceu? Prefiro resolver o problema de verdade a simplesmente reagir a uma avaliação — meu compromisso é com você ter uma solução, não só com minha reputação.</div>
+      <div class="template-note">Nunca mencione a avaliação em si na resposta — foque inteiramente em resolver o problema real por trás da ameaça.</div>
+    </div>
+  </div>
+</section>
+
+<section class="week-section" data-category="clausula" data-month="2026-07" style="border-bottom:none;">
+  <div class="wrap">
+    <span class="category-badge cat-clausula">Nova cláusula</span>
+    <div class="week-head"><span class="week-tag">SEMANA 09</span></div>
+    <h2>Nova cláusula: primeiro contato com leads de grupo de indicação</h2>
+    <p class="week-sub">Para corretores ativos em grupos de WhatsApp de bairro, condomínio ou categoria profissional — uma variante da Cláusula 05.</p>
+
+    <div class="template-card">
+      <div class="template-name">Primeiro contato — lead de grupo</div>
+      <div class="template-when">O lead te viu no grupo, não foi indicado por uma pessoa específica — o tom precisa ser mais leve, menos "vendedor entrando no grupo".</div>
+      <div class="template-body">Oi <span class="placeholder">[NOME]</span>! Vi sua mensagem no grupo sobre seguro — várias pessoas de lá me conhecem, então já te chamo direto: posso te ajudar com uma cotação sem compromisso, sem pressa nenhuma pra decidir.</div>
+      <div class="template-note">"Sem pressa" reduz a resistência natural a quem "vende" dentro de um grupo comunitário.</div>
+    </div>
+
+    <div class="whatsapp-note">
+      <p>💬 Essa e as próximas atualizações também são publicadas no grupo de WhatsApp da comunidade — se você não está lá ainda, me chama que eu te adiciono.</p>
+    </div>
+  </div>
+</section>
+
+<p class="no-results" id="no-results">Nenhuma novidade encontrada com esse filtro. Tente outra combinação.</p>
+
+<script>
+// Copy buttons (existing)
+document.querySelectorAll('.template-card').forEach(card => {
+  const body = card.querySelector('.template-body');
+  if (!body) return;
+  const btn = document.createElement('button');
+  btn.className = 'copy-btn';
+  btn.textContent = 'Copiar modelo';
+  btn.onclick = () => {
+    navigator.clipboard.writeText(body.innerText).then(() => {
+      btn.textContent = 'Copiado! ✓';
+      setTimeout(() => { btn.textContent = 'Copiar modelo'; }, 2000);
+    }).catch(() => {
+      btn.textContent = 'Selecione e copie manualmente';
+    });
+  };
+  body.insertAdjacentElement('afterend', btn);
+});
+
+// Filters: category pills + month dropdown work together
+const weekSections = document.querySelectorAll('.week-section');
+const monthSelect = document.getElementById('month-filter');
+const noResults = document.getElementById('no-results');
+
+// Build month options automatically from whatever weeks exist on the page
+const monthLabels = {'2026-07':'Julho 2026','2026-08':'Agosto 2026','2026-09':'Setembro 2026'};
+const months = [...new Set([...weekSections].map(s => s.dataset.month))].sort().reverse();
+months.forEach(m => {
+  const opt = document.createElement('option');
+  opt.value = m;
+  opt.textContent = monthLabels[m] || m;
+  monthSelect.appendChild(opt);
+});
+
+let activeCategory = 'todos';
+let activeMonth = 'todos';
+
+function applyFilters() {
+  let visibleCount = 0;
+  weekSections.forEach(section => {
+    const matchesCategory = activeCategory === 'todos' || section.dataset.category === activeCategory;
+    const matchesMonth = activeMonth === 'todos' || section.dataset.month === activeMonth;
+    const show = matchesCategory && matchesMonth;
+    section.style.display = show ? '' : 'none';
+    if (show) visibleCount++;
+  });
+  noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeCategory = pill.dataset.filter;
+    applyFilters();
+  });
+});
+
+monthSelect.addEventListener('change', () => {
+  activeMonth = monthSelect.value;
+  applyFilters();
+});
+</script>
+
+<footer>
+  <div class="wrap">Corretor Blindado — Novidades da Semana. Conteúdo exclusivo para assinantes ativos.</div>
+</footer>
+
+</body>
+</html>

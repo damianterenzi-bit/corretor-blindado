@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pesquisa da Turma Piloto — Corretor Blindado</title>
+<style>
+  :root{
+    --navy:#0A0F1C; --navy-2:#0F1626; --navy-3:#151E33;
+    --amber:#D97706; --amber-2:#F0A83E;
+    --paper:#EDEBE4; --paper-dim:#9AA3B5;
+    --line:rgba(240,168,62,0.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--navy); color:var(--paper); font-family:'Iowan Old Style','Palatino Linotype',Georgia,serif; line-height:1.6;}
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:640px; margin:0 auto; padding:0 24px;}
+
+  header{padding:20px 0; border-bottom:1px solid var(--line);}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-mark{width:34px;height:34px;border:1.5px solid var(--amber); border-radius:50%; display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--amber-2); font-family:sans-serif; font-weight:700;}
+  .brand-name{font-family:sans-serif; font-weight:700; font-size:15px;}
+  .brand-name em{font-style:normal; color:var(--amber-2);}
+
+  .intro{padding:56px 0 36px;}
+  .kicker{font-family:sans-serif; text-transform:uppercase; letter-spacing:0.14em; font-size:11.5px; color:var(--amber-2); font-weight:600; margin-bottom:16px;}
+  h1{font-size:clamp(26px,4vw,36px); font-weight:400; line-height:1.2; margin-bottom:16px;}
+  .intro p{color:var(--paper-dim); font-size:15.5px;}
+
+  .section{padding:36px 0; border-top:1px solid var(--line);}
+  .section-tag{font-family:sans-serif; font-size:11.5px; color:var(--amber-2); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;}
+  .section-title{font-size:20px; margin-bottom:24px;}
+
+  .q{margin-bottom:24px;}
+  .q-label{font-family:sans-serif; font-size:14.5px; color:var(--paper); margin-bottom:12px; display:block; font-weight:600;}
+  .q-hint{font-family:sans-serif; font-size:12.5px; color:var(--paper-dim); margin-top:-8px; margin-bottom:12px; display:block;}
+
+  .scale{display:flex; gap:8px;}
+  .scale label{
+    font-family:sans-serif; font-size:13px; color:var(--paper-dim); border:1px solid var(--line);
+    border-radius:4px; padding:10px 0; flex:1; text-align:center; cursor:pointer;
+  }
+  .scale input{display:none;}
+  .scale input:checked + label{border-color:var(--amber); color:var(--amber-2); background:rgba(240,168,62,0.08);}
+
+  .radio-group{display:flex; flex-direction:column; gap:8px;}
+  .radio-option{
+    font-family:sans-serif; font-size:14px; color:var(--paper-dim); border:1px solid var(--line);
+    border-radius:4px; padding:12px 16px; cursor:pointer; display:block;
+  }
+  .radio-option input{margin-right:10px;}
+  .radio-option:has(input:checked){border-color:var(--amber); color:var(--paper); background:rgba(240,168,62,0.06);}
+
+  .text-input, .textarea{
+    width:100%; font-family:sans-serif; font-size:14px; background:var(--navy-2);
+    border:1px solid var(--line); color:var(--paper); padding:12px 14px; border-radius:4px;
+  }
+  .textarea{min-height:70px; resize:vertical;}
+  .text-input:focus, .textarea:focus{outline:none; border-color:var(--amber);}
+
+  .submit-btn{
+    font-family:sans-serif; font-weight:600; font-size:15px; background:var(--amber);
+    color:var(--navy); border:1px solid var(--amber); padding:16px 24px; border-radius:4px;
+    cursor:pointer; width:100%; margin-top:16px;
+  }
+  .submit-btn:hover{background:var(--amber-2);}
+
+  .success{display:none; text-align:center; padding:80px 0;}
+  .success h2{font-size:26px; margin-bottom:14px;}
+  .success p{font-family:sans-serif; color:var(--paper-dim); font-size:15px;}
+
+  footer{padding:40px 0; font-family:sans-serif; font-size:12px; color:var(--paper-dim); text-align:center;}
+  .honeypot{position:absolute; left:-9999px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap brand">
+    <div class="brand-mark">CB</div>
+    <div class="brand-name">Corretor <em>Blindado</em></div>
+  </div>
+</header>
+
+<section class="intro">
+  <div class="wrap">
+    <div class="kicker">Turma piloto · 5 minutos</div>
+    <h1>O que funcionou, o que não funcionou.</h1>
+    <p>9 perguntas curtas, a maioria só de marcar. Sua resposta molda exatamente o que vem na próxima versão — sem filtro, pode ser direto(a).</p>
+  </div>
+</section>
+
+<form name="pilot-survey" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="survey-form">
+<input type="hidden" name="form-name" value="pilot-survey" />
+<p class="honeypot"><label>Não preencha isto: <input name="bot-field" /></label></p>
+
+<div class="wrap">
+
+  <div class="section" style="border-top:none;">
+    <div class="section-tag">Sobre você</div>
+    <div class="section-title">Só o essencial</div>
+
+    <div class="q">
+      <label class="q-label">Nome ou e-mail (opcional)</label>
+      <span class="q-hint">Só preencha se quiser que eu volte a falar diretamente sobre algo que você apontar aqui.</span>
+      <input type="text" name="contato" class="text-input" placeholder="Fica à vontade para deixar em branco">
+    </div>
+
+    <div class="q">
+      <label class="q-label">Há quantos anos você atua como corretor(a)?</label>
+      <div class="radio-group">
+        <label class="radio-option"><input type="radio" name="tempo_profissao" value="0-5"> 0 a 5 anos</label>
+        <label class="radio-option"><input type="radio" name="tempo_profissao" value="6-15"> 6 a 15 anos</label>
+        <label class="radio-option"><input type="radio" name="tempo_profissao" value="16-25"> 16 a 25 anos</label>
+        <label class="radio-option"><input type="radio" name="tempo_profissao" value="25+"> Mais de 25 anos</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-tag">As Cláusulas</div>
+    <div class="section-title">O núcleo do produto</div>
+
+    <div class="q">
+      <label class="q-label">De 1 a 5, o quanto os modelos te ajudaram a economizar tempo?</label>
+      <div class="scale">
+        <input type="radio" id="tempo1" name="nota_tempo" value="1"><label for="tempo1">1</label>
+        <input type="radio" id="tempo2" name="nota_tempo" value="2"><label for="tempo2">2</label>
+        <input type="radio" id="tempo3" name="nota_tempo" value="3"><label for="tempo3">3</label>
+        <input type="radio" id="tempo4" name="nota_tempo" value="4"><label for="tempo4">4</label>
+        <input type="radio" id="tempo5" name="nota_tempo" value="5"><label for="tempo5">5</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <label class="q-label">Qual cláusula você mais usou de verdade?</label>
+      <input type="text" name="clausula_mais_usada" class="text-input" placeholder="Ex: Cláusula 02 — Renovação">
+    </div>
+
+    <div class="q">
+      <label class="q-label">O que faltou nas cláusulas? Alguma situação real que não teve modelo pronto?</label>
+      <textarea name="clausulas_faltando" class="textarea" placeholder="Pode ser bem específico(a)."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-tag">O site</div>
+    <div class="section-title">Uso e navegação</div>
+
+    <div class="q">
+      <label class="q-label">De 1 a 5, o quanto foi fácil usar o site (encontrar, copiar, entender)?</label>
+      <div class="scale">
+        <input type="radio" id="site1" name="nota_site" value="1"><label for="site1">1</label>
+        <input type="radio" id="site2" name="nota_site" value="2"><label for="site2">2</label>
+        <input type="radio" id="site3" name="nota_site" value="3"><label for="site3">3</label>
+        <input type="radio" id="site4" name="nota_site" value="4"><label for="site4">4</label>
+        <input type="radio" id="site5" name="nota_site" value="5"><label for="site5">5</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <label class="q-label">Teve alguma parte confusa, ou que travou você?</label>
+      <textarea name="site_confuso" class="textarea" placeholder="Qualquer coisa, por menor que pareça."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-tag">Preço</div>
+    <div class="section-title">A pergunta mais importante</div>
+
+    <div class="q">
+      <label class="q-label">Você pagaria R$99/mês pelo acesso completo (10 cláusulas + comunidade + novidades semanais)?</label>
+      <div class="radio-group">
+        <label class="radio-option"><input type="radio" name="pagaria" value="sim"> Sim, pagaria sem pensar muito</label>
+        <label class="radio-option"><input type="radio" name="pagaria" value="talvez"> Talvez, depende de algo</label>
+        <label class="radio-option"><input type="radio" name="pagaria" value="nao"> Não, não pagaria</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <label class="q-label">Se marcou "talvez" ou "não" — o que mudaria sua resposta?</label>
+      <textarea name="o_que_mudaria" class="textarea" placeholder="Preço, conteúdo, formato, qualquer coisa."></textarea>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-tag">Uma pergunta sobre o futuro</div>
+    <div class="section-title">IA dedicada</div>
+
+    <div class="q">
+      <label class="q-label">Se o site tivesse um assistente de IA para tirar suas dúvidas específicas (limitado a poucas perguntas por semana), isso faria diferença para você continuar assinando?</label>
+      <div class="radio-group">
+        <label class="radio-option"><input type="radio" name="ia_dedicada" value="muita_diferenca"> Sim, faria muita diferença</label>
+        <label class="radio-option"><input type="radio" name="ia_dedicada" value="pouca_diferenca"> Faria um pouco de diferença</label>
+        <label class="radio-option"><input type="radio" name="ia_dedicada" value="nenhuma_diferenca"> Não faria diferença nenhuma</label>
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="submit-btn">Enviar minhas respostas</button>
+</div>
+</form>
+
+<div class="success" id="survey-success">
+  <div class="wrap">
+    <h2>Obrigado — recebido!</h2>
+    <p>Isso vai direto pra próxima versão do programa. Valeu de verdade pelo tempo.</p>
+  </div>
+</div>
+
+<script>
+const surveyForm = document.getElementById('survey-form');
+surveyForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const data = new FormData(surveyForm);
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(data).toString()
+  })
+  .then(() => {
+    surveyForm.style.display = 'none';
+    document.getElementById('survey-success').style.display = 'block';
+  })
+  .catch(() => {
+    alert('Algo deu errado ao enviar. Tente novamente.');
+  });
+});
+</script>
+
+<footer>
+  <div class="wrap">Corretor Blindado — Pesquisa da Turma Piloto.</div>
+</footer>
+
+</body>
+</html>
