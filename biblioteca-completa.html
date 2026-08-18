@@ -116,8 +116,8 @@
   /* ---- AI assistant widget ---- */
   .assistant-section{padding:20px 0 60px;}
   .assistant-box{
-    max-width:640px; margin:0 auto; background:var(--navy-2); border:1px solid var(--amber);
-    border-radius:8px; padding:30px 32px;
+    width:100%; background:var(--navy-2); border:1px solid var(--amber);
+    border-radius:8px; padding:30px 32px; box-sizing:border-box;
   }
   .assistant-head{display:flex; align-items:center; gap:12px; margin-bottom:6px;}
   .assistant-badge{width:32px; height:32px; border-radius:50%; background:var(--amber); color:var(--navy); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0;}
@@ -167,7 +167,7 @@
     <div class="kicker" style="text-align:center; justify-content:center; display:flex;">Turma piloto · sua ferramenta principal</div>
     <h1 style="text-align:center; margin:0 auto 28px; max-width:20ch;">Descreva a situação. <em>Receba o rascunho.</em></h1>
 
-    <div class="assistant-box" style="max-width:720px;">
+    <div class="assistant-box">
       <div class="assistant-head">
         <div class="assistant-badge">✦</div>
         <div class="assistant-title">Assistente de IA</div>
@@ -543,8 +543,22 @@
 </section>
 
 <footer>
-  <div class="wrap">Corretor Blindado — Biblioteca de Modelos v1. Ajuste sempre ao seu tom antes de enviar.</div>
+  <div class="wrap">
+    <p>Corretor Blindado — Biblioteca de Modelos v1. Ajuste sempre ao seu tom antes de enviar.</p>
+    <p class="sans" style="margin-top:10px; font-size:12.5px;">
+      <a href="sobre.html" style="color:var(--paper-dim);">Quem somos</a>
+      &nbsp;·&nbsp;
+      <a href="sobre.html#privacidade" style="color:var(--paper-dim);">Privacidade e cookies</a>
+    </p>
+  </div>
 </footer>
+
+<div id="cookie-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; background:var(--navy-2); border-top:1px solid var(--amber); padding:18px 24px; z-index:100;">
+  <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+    <p class="sans" style="font-size:13px; color:var(--paper-dim); margin:0; flex:1; min-width:240px;">Usamos armazenamento local do navegador para lembrar seu login e sua cota semanal do assistente de IA — não vendemos nem compartilhamos seus dados. <a href="sobre.html#privacidade" style="color:var(--amber-2);">Saiba mais</a>.</p>
+    <button id="cookie-accept" class="sans" style="background:var(--amber); color:var(--navy); border:none; padding:10px 22px; border-radius:4px; font-weight:600; font-size:13px; cursor:pointer; flex-shrink:0;">Entendi</button>
+  </div>
+</div>
 
 <script>
 // Mostra o nome de quem já entrou pelo login da página inicial, se disponível
@@ -681,6 +695,15 @@ if (feedbackForm) {
     });
   });
 }
+
+// --- cookie/privacy banner ---
+if (!localStorage.getItem('cb-cookie-consent')) {
+  document.getElementById('cookie-banner').style.display = 'block';
+}
+document.getElementById('cookie-accept').addEventListener('click', () => {
+  localStorage.setItem('cb-cookie-consent', '1');
+  document.getElementById('cookie-banner').style.display = 'none';
+});
 </script>
 
 </body>

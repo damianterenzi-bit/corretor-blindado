@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quem somos — Corretor Blindado</title>
+<style>
+  :root{
+    --navy:#0A0F1C; --navy-2:#0F1626; --navy-3:#151E33;
+    --amber:#D97706; --amber-2:#F0A83E;
+    --paper:#EDEBE4; --paper-dim:#9AA3B5;
+    --line:rgba(240,168,62,0.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--navy); color:var(--paper); font-family:'Iowan Old Style','Palatino Linotype',Georgia,serif; line-height:1.7;}
+  .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
+  .wrap{max-width:720px; margin:0 auto; padding:0 24px;}
+
+  header{padding:20px 0; border-bottom:1px solid var(--line);}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between;}
+  .brand{display:flex; align-items:center; gap:12px;}
+  .brand-mark{width:34px;height:34px;border:1.5px solid var(--amber); border-radius:50%; display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--amber-2); font-family:sans-serif; font-weight:700;}
+  .brand-name{font-family:sans-serif; font-weight:700; font-size:15px;}
+  .brand-name em{font-style:normal; color:var(--amber-2);}
+  .back-link{font-family:sans-serif; font-size:13px; color:var(--paper-dim); text-decoration:none;}
+  .back-link:hover{color:var(--amber-2);}
+
+  section{padding:56px 0; border-bottom:1px solid var(--line);}
+  .kicker{font-family:sans-serif; text-transform:uppercase; letter-spacing:0.14em; font-size:11.5px; color:var(--amber-2); font-weight:600; margin-bottom:16px;}
+  h1{font-size:clamp(28px,4vw,38px); font-weight:400; margin-bottom:24px;}
+  h1 em{font-style:italic; color:var(--amber-2);}
+  h2{font-size:22px; font-weight:400; margin-bottom:16px; margin-top:28px;}
+  p{color:var(--paper-dim); font-size:16px; margin-bottom:16px;}
+  p strong{color:var(--paper);}
+  ul{margin:0 0 16px 20px; color:var(--paper-dim);}
+  li{margin-bottom:8px;}
+
+  footer{padding:40px 0; font-family:sans-serif; font-size:12px; color:var(--paper-dim); text-align:center;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <div class="brand-mark">CB</div>
+      <div class="brand-name">Corretor <em>Blindado</em></div>
+    </div>
+    <a href="index.html" class="back-link">🏠 Início</a>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Quem somos</div>
+    <h1>Um projeto em construção <em>junto com corretores reais.</em></h1>
+    <p>O Corretor Blindado nasceu de uma observação simples: corretores de seguros experientes já usam IA na vida pessoal, mas não sabem por onde começar a usar isso no trabalho — e, mais importante, têm medo de que fazer isso errado prejudique a confiança que levaram anos para construir com seus clientes.</p>
+    <p>Este site está atualmente em <strong>fase piloto</strong>, aberto gratuitamente até 31 de outubro de 2026, em troca de feedback direto de quem realmente vive a rotina de um corretor. Cada cláusula, cada funcionalidade, e o próprio assistente de IA foram desenhados a partir dessa lógica — e continuam sendo ajustados com o que a turma piloto nos ensina.</p>
+    <p>Se você tem dúvidas, sugestões, ou quer conversar sobre o projeto, pode falar com a gente pelo grupo de WhatsApp da turma piloto ou pelo <a href="pilot-survey.html" style="color:var(--amber-2);">formulário de feedback</a>.</p>
+  </div>
+</section>
+
+<section id="privacidade" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="kicker">Privacidade e cookies</div>
+    <h1>O que guardamos, <em>e por quê.</em></h1>
+
+    <h2>Dados que você nos dá diretamente</h2>
+    <p>Quando você se inscreve na turma piloto, guardamos seu <strong>nome e e-mail</strong>, enviados através do formulário do site. Usamos isso para: avisar sobre novidades, contatar você pelo WhatsApp sobre o programa, e entender quem está usando a ferramenta. Não vendemos nem compartilhamos esses dados com terceiros.</p>
+
+    <h2>Armazenamento local do navegador</h2>
+    <p>O site usa o <strong>localStorage</strong> do seu navegador (não são cookies de rastreamento de terceiros) para lembrar algumas coisas simples:</p>
+    <ul>
+      <li>Que você já fez login, para não pedir de novo toda vez</li>
+      <li>Seu nome, para mostrar a saudação no topo da página</li>
+      <li>Quantas perguntas você já fez ao assistente de IA essa semana</li>
+      <li>Se você já respondeu à pesquisa de feedback do piloto</li>
+    </ul>
+    <p>Esses dados ficam salvos <strong>só no seu próprio navegador</strong> — não são enviados para nenhum servidor além do necessário para o funcionamento do site.</p>
+
+    <h2>O assistente de IA</h2>
+    <p>As perguntas que você envia ao assistente são processadas para gerar uma resposta, usando a API da Anthropic (Claude). Não use dados sensíveis de clientes reais (nome completo, CPF, número de apólice) nas suas perguntas — descreva a situação de forma genérica.</p>
+
+    <h2>Seus direitos</h2>
+    <p>Você pode pedir a remoção dos seus dados a qualquer momento, entrando em contato pelo WhatsApp da turma piloto ou pelo formulário de feedback.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Corretor Blindado — programa piloto para corretores de seguros.</div>
+</footer>
+
+</body>
+</html>

@@ -151,6 +151,8 @@
   .quote-block{
     border-left:2px solid var(--amber); padding-left:26px; margin:0 auto; max-width:60ch;
   }
+  .quote-grid{display:grid; grid-template-columns:1fr 1fr; gap:40px; max-width:900px; margin:0 auto;}
+  @media(max-width:760px){.quote-grid{grid-template-columns:1fr; gap:32px;}}
   .quote-block p{font-size:20px; font-style:italic; color:var(--paper); margin-bottom:14px;}
   .quote-attr{font-family:var(--sans); font-size:13px; color:var(--paper-dim);}
 
@@ -191,8 +193,8 @@
 
   /* ---- AI assistant widget (embedded post-signup) ---- */
   .assistant-box{
-    max-width:640px; margin:0 auto; background:var(--navy-2); border:1px solid var(--amber);
-    border-radius:8px; padding:28px 30px; text-align:left;
+    width:100%; background:var(--navy-2); border:1px solid var(--amber);
+    border-radius:8px; padding:28px 30px; text-align:left; box-sizing:border-box;
   }
   .assistant-head{display:flex; align-items:center; gap:12px; margin-bottom:6px;}
   .assistant-badge{width:32px; height:32px; border-radius:50%; background:var(--amber); color:var(--navy); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0;}
@@ -427,9 +429,15 @@
 
 <section class="section-line">
   <div class="wrap">
-    <div class="quote-block">
-      <p>"Eu não tinha medo de IA. Eu tinha medo de ser a única que não sabia usar — e todo mundo perceber."</p>
-      <div class="quote-attr sans">— feedback de corretora, 22 anos de profissão, turma piloto</div>
+    <div class="quote-grid">
+      <div class="quote-block">
+        <p>"Eu não tinha medo de IA. Eu tinha medo de ser a única que não sabia usar — e todo mundo perceber."</p>
+        <div class="quote-attr sans">— feedback de corretora, 22 anos de profissão, turma piloto</div>
+      </div>
+      <div class="quote-block">
+        <p>"Perdi um cliente de 8 anos porque demorei um dia pra responder. Isso nunca mais vai acontecer comigo."</p>
+        <div class="quote-attr sans">— feedback de corretor, 15 anos de profissão, turma piloto</div>
+      </div>
     </div>
   </div>
 </section>
@@ -511,8 +519,22 @@
 </div>
 
 <footer>
-  <div class="wrap">Corretor Blindado — programa piloto para corretores de seguros. Não constitui aconselhamento regulatório ou substituição de obrigações da SUSEP.</div>
+  <div class="wrap">
+    <p>Corretor Blindado — programa piloto para corretores de seguros. Não constitui aconselhamento regulatório ou substituição de obrigações da SUSEP.</p>
+    <p class="sans" style="margin-top:10px; font-size:12.5px;">
+      <a href="sobre.html" style="color:var(--paper-dim);">Quem somos</a>
+      &nbsp;·&nbsp;
+      <a href="sobre.html#privacidade" style="color:var(--paper-dim);">Privacidade e cookies</a>
+    </p>
+  </div>
 </footer>
+
+<div id="cookie-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; background:var(--navy-2); border-top:1px solid var(--amber); padding:18px 24px; z-index:100;">
+  <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+    <p class="sans" style="font-size:13px; color:var(--paper-dim); margin:0; flex:1; min-width:240px;">Usamos armazenamento local do navegador para lembrar seu login e sua cota semanal do assistente de IA — não vendemos nem compartilhamos seus dados. <a href="sobre.html#privacidade" style="color:var(--amber-2);">Saiba mais</a>.</p>
+    <button id="cookie-accept" class="sans" style="background:var(--amber); color:var(--navy); border:none; padding:10px 22px; border-radius:4px; font-weight:600; font-size:13px; cursor:pointer; flex-shrink:0;">Entendi</button>
+  </div>
+</div>
 
 <script>
 const questions = [
@@ -750,6 +772,15 @@ function initAssistant() {
 // as funções do assistente já existem — chamar isso antes causava um erro que
 // travava o resto do script (incluindo o formulário de login).
 initAssistant();
+
+// --- cookie/privacy banner ---
+if (!localStorage.getItem('cb-cookie-consent')) {
+  document.getElementById('cookie-banner').style.display = 'block';
+}
+document.getElementById('cookie-accept').addEventListener('click', () => {
+  localStorage.setItem('cb-cookie-consent', '1');
+  document.getElementById('cookie-banner').style.display = 'none';
+});
 </script>
 
 </body>
