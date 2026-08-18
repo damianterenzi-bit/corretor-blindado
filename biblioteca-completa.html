@@ -162,6 +162,15 @@
   </div>
 </header>
 
+<!-- Formulário oculto — existe só para o Netlify detectar e criar a tabela de logs.
+     Nunca aparece pro usuário; o JS envia pra cá em silêncio a cada pergunta feita à IA. -->
+<form name="ai-conversation-log" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="ai-conversation-log" />
+  <input type="text" name="pergunta" />
+  <input type="text" name="resposta" />
+  <input type="text" name="pagina" />
+</form>
+
 <section class="assistant-section" style="padding-top:48px;">
   <div class="wrap">
     <div class="kicker" style="text-align:center; justify-content:center; display:flex;">Turma piloto · sua ferramenta principal</div>
@@ -643,6 +652,20 @@ function appendMessage(text, sender) {
 }
 
 const assistantSend = document.getElementById('assistant-send');
+function logConversation(pergunta, resposta) {
+  // Envio silencioso, em segundo plano — nunca deve travar ou interromper o
+  // uso do assistente, mesmo se falhar.
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      'form-name': 'ai-conversation-log',
+      pergunta: pergunta,
+      resposta: resposta,
+      pagina: window.location.pathname
+    }).toString()
+  }).catch(() => { /* falha silenciosa — não é crítico */ });
+}
 const assistantInput = document.getElementById('assistant-input');
 
 if (assistantSend) {
@@ -665,8 +688,10 @@ if (assistantSend) {
         body: JSON.stringify({ message })
       });
       const data = await res.json();
-      appendMessage(data.reply || 'Não consegui responder agora. Tente de novo em instantes.', 'ai');
+      const replyText = data.reply || 'Não consegui responder agora. Tente de novo em instantes.';
+      appendMessage(replyText, 'ai');
       incrementUsage();
+      logConversation(message, replyText);
     } catch (err) {
       appendMessage('Erro de conexão. Tente novamente em instantes.', 'ai');
     }
