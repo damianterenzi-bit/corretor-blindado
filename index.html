@@ -102,8 +102,9 @@
     background:var(--navy-2); border:1px solid var(--line); border-radius:4px; padding:26px;
   }
   .fact-card + .fact-card{margin-top:16px;}
-  .fact-num{font-size:26px; color:var(--amber-2);}
+  .fact-num{font-size:26px; color:var(--amber-2); font-variant-numeric:tabular-nums;}
   .fact-text{font-family:var(--sans); font-size:13px; color:var(--paper-dim); margin-top:8px; line-height:1.5;}
+  .fact-caption{font-family:var(--sans); font-size:11.5px; color:var(--paper-dim); opacity:0.7; margin-top:6px; font-style:italic;}
 
   /* ---- diagnostic quiz ---- */
   .quiz-shell{
@@ -354,8 +355,13 @@
     </div>
     <div>
       <div class="fact-card">
-        <div class="fact-num">6 horas por semana</div>
+        <div class="fact-num" id="count-hours" data-count-to="6" data-suffix=" horas por semana">0</div>
         <div class="fact-text">tempo médio estimado escrevendo mensagens de acompanhamento, propostas e lembretes de renovação manualmente.</div>
+      </div>
+      <div class="fact-card">
+        <div class="fact-num" id="count-clients" data-count-to="3" data-suffix=" conversas a mais por mês">0</div>
+        <div class="fact-text">se esse tempo semanal fosse redirecionado para prospecção e follow-up em vez de escrever mensagens do zero.</div>
+        <div class="fact-caption">*estimativa ilustrativa, não um dado medido — varia conforme seu funil e sua carteira.</div>
       </div>
       <div class="fact-card">
         <div class="fact-num">Primeira mensagem</div>
@@ -392,7 +398,7 @@
 <section class="section-line" id="programa">
   <div class="wrap" style="max-width:760px;">
     <div class="kicker">A apólice do programa</div>
-    <h2>4 semanas ao vivo, 10 cláusulas na biblioteca.</h2>
+    <h2 style="max-width:34ch;">4 semanas ao vivo, 10 cláusulas na biblioteca.</h2>
     <p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; font-size:14px; color:var(--paper-dim); margin:-6px 0 32px;">A Biblioteca de Modelos com as 10 cláusulas fica liberada desde o primeiro dia — as sessões ao vivo aprofundam os temas mais decisivos, não substituem a biblioteca. <a href="biblioteca-modelos.html" style="color:var(--amber-2);">Acesse a Biblioteca de Modelos →</a></p>
     <div class="clauses">
       <div class="clause">
@@ -435,7 +441,7 @@
         <div class="quote-attr sans">— feedback de corretora, 22 anos de profissão, turma piloto</div>
       </div>
       <div class="quote-block">
-        <p>"Perdi um cliente de 8 anos porque demorei um dia pra responder. Isso nunca mais vai acontecer comigo."</p>
+        <p>"Perdi um cliente de 8 anos porque demorei muitos dias pra responder. Isso nunca mais vai acontecer comigo."</p>
         <div class="quote-attr sans">— feedback de corretor, 15 anos de profissão, turma piloto</div>
       </div>
     </div>
@@ -781,6 +787,37 @@ document.getElementById('cookie-accept').addEventListener('click', () => {
   localStorage.setItem('cb-cookie-consent', '1');
   document.getElementById('cookie-banner').style.display = 'none';
 });
+
+// --- animated counters (6h/semana, estimativa de conversas) ---
+function animateCount(el) {
+  const target = parseInt(el.dataset.countTo, 10);
+  const suffix = el.dataset.suffix || '';
+  const duration = 1200;
+  const start = performance.now();
+  function tick(now) {
+    const progress = Math.min((now - start) / duration, 1);
+    const value = Math.round(progress * target);
+    el.textContent = value + suffix;
+    if (progress < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+const countEls = document.querySelectorAll('[data-count-to]');
+if (countEls.length && 'IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCount(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  countEls.forEach(el => observer.observe(el));
+} else {
+  // navegadores sem suporte: mostra o valor final direto, sem animação
+  countEls.forEach(el => { el.textContent = el.dataset.countTo + (el.dataset.suffix || ''); });
+}
 </script>
 
 </body>

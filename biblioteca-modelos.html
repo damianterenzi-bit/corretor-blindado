@@ -123,7 +123,10 @@
       <div class="brand-mark">CB</div>
       <div class="brand-name">Corretor <em>Blindado</em></div>
     </div>
-    <a href="corretor-blindado-landing.html" class="back-link">← Voltar ao diagnóstico</a>
+    <div style="display:flex; align-items:center; gap:20px;">
+      <div id="user-greeting" class="sans" style="display:none; font-size:13px; color:var(--paper-dim);">Olá, <span id="user-name" style="color:var(--amber-2); font-weight:600;"></span></div>
+      <a href="index.html" class="back-link">🏠 Início</a>
+    </div>
   </div>
 </header>
 
@@ -339,7 +342,7 @@
       <div style="font-size:28px; margin-bottom:14px;">🔒</div>
       <div class="template-name" style="text-transform:none; font-size:16px; margin-bottom:10px;">Disponível na assinatura</div>
       <div class="template-when" style="margin-bottom:20px; font-style:normal;">Boas-vindas após emissão da apólice, e orientação de como acionar o seguro em caso de emergência.</div>
-      <a href="corretor-blindado-landing.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
+      <a href="index.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
     </div>
   </div>
 </section>
@@ -352,7 +355,7 @@
       <div style="font-size:28px; margin-bottom:14px;">🔒</div>
       <div class="template-name" style="text-transform:none; font-size:16px; margin-bottom:10px;">Disponível na assinatura</div>
       <div class="template-when" style="margin-bottom:20px; font-style:normal;">Cliente pede cancelamento (retenção), e confirmação educada quando não há mais o que fazer.</div>
-      <a href="corretor-blindado-landing.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
+      <a href="index.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
     </div>
   </div>
 </section>
@@ -365,7 +368,7 @@
       <div style="font-size:28px; margin-bottom:14px;">🔒</div>
       <div class="template-name" style="text-transform:none; font-size:16px; margin-bottom:10px;">Disponível na assinatura</div>
       <div class="template-when" style="margin-bottom:20px; font-style:normal;">Explicação de aumento por sinistralidade, e orientação de como recuperar bônus ao longo do tempo.</div>
-      <a href="corretor-blindado-landing.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
+      <a href="index.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
     </div>
   </div>
 </section>
@@ -378,7 +381,7 @@
       <div style="font-size:28px; margin-bottom:14px;">🔒</div>
       <div class="template-name" style="text-transform:none; font-size:16px; margin-bottom:10px;">Disponível na assinatura</div>
       <div class="template-when" style="margin-bottom:20px; font-style:normal;">Revisão completa de carteira, e proposta de pacote família/multirrisco com desconto.</div>
-      <a href="corretor-blindado-landing.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
+      <a href="index.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
     </div>
   </div>
 </section>
@@ -391,7 +394,7 @@
       <div style="font-size:28px; margin-bottom:14px;">🔒</div>
       <div class="template-name" style="text-transform:none; font-size:16px; margin-bottom:10px;">Disponível na assinatura</div>
       <div class="template-when" style="margin-bottom:20px; font-style:normal;">Comunicado de reajuste geral por inflação/mercado, e comunicado de mudança regulatória da SUSEP.</div>
-      <a href="corretor-blindado-landing.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
+      <a href="index.html#pricing" class="btn btn-primary sans" style="display:inline-flex;">Desbloquear com 7 dias grátis</a>
     </div>
   </div>
 </section>
@@ -446,6 +449,13 @@
 </footer>
 
 <script>
+// Mostra o nome de quem já entrou pelo login da página inicial, se disponível
+const cbNome = localStorage.getItem('cb-nome');
+if (cbNome) {
+  document.getElementById('user-name').textContent = cbNome;
+  document.getElementById('user-greeting').style.display = 'block';
+}
+
 // Adds a "Copiar modelo" button under every template automatically — no manual edits needed per card.
 document.querySelectorAll('.template-card').forEach(card => {
   const body = card.querySelector('.template-body');

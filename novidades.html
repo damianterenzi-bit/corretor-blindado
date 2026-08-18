@@ -101,7 +101,11 @@
       <div class="brand-mark">CB</div>
       <div class="brand-name">Corretor <em>Blindado</em></div>
     </div>
-    <a href="biblioteca-completa.html" class="back-link">← Voltar à Biblioteca completa</a>
+    <div style="display:flex; align-items:center; gap:20px;">
+      <div id="user-greeting" class="sans" style="display:none; font-size:13px; color:var(--paper-dim);">Olá, <span id="user-name" style="color:var(--amber-2); font-weight:600;"></span></div>
+      <a href="index.html" class="back-link">🏠 Início</a>
+      <a href="biblioteca-completa.html" class="back-link">← Voltar à Biblioteca completa</a>
+    </div>
   </div>
 </header>
 
@@ -218,6 +222,13 @@
 <p class="no-results" id="no-results">Nenhuma novidade encontrada com esse filtro. Tente outra combinação.</p>
 
 <script>
+// Mostra o nome de quem já entrou pelo login da página inicial, se disponível
+const cbNome = localStorage.getItem('cb-nome');
+if (cbNome) {
+  document.getElementById('user-name').textContent = cbNome;
+  document.getElementById('user-greeting').style.display = 'block';
+}
+
 // Copy buttons (existing)
 document.querySelectorAll('.template-card').forEach(card => {
   const body = card.querySelector('.template-body');
